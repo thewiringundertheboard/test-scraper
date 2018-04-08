@@ -52,9 +52,8 @@ class TestScraperSpider(scrapy.Spider):
                     # loop through each class="left" div
                     for div in case_array.xpath('//div[@class="left"]'):
                         # set a row number so we can find the corresponding price row
-                        row = 1
                         # loop through each product within
-                        for product in div.xpath('./*[starts-with(@class, "prod")]'):
+                        for row, product in enumerate(div.xpath('./*[starts-with(@class, "prod")]')):
 
                             name = product.xpath('./div[@class="name"]/text()').extract_first()
                             desc = product.xpath('./text()').extract_first()
@@ -63,7 +62,6 @@ class TestScraperSpider(scrapy.Spider):
                             price = div.xpath('./following-sibling::div[1][@class="right"]/\
                             div[starts-with(@class, "price")][' + str(row) + ']\
                                               /text()').extract_first()
-                            row += 1
 
                             yield {
                                 'name': name,
